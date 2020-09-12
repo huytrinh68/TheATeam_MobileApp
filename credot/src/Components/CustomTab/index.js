@@ -4,19 +4,19 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import Foundation from 'react-native-vector-icons/Foundation'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
+import Feather from 'react-native-vector-icons/Feather'
 import { Color } from '@Helper'
 
 const CustomTab = ({ ...props }) => {
-    const iconSize = 23
-    const fontSize = 12
+    const iconSize = 26
 
     const handleIcon = (routeName, index) => {
         switch (routeName) {
             case "Home":
-                return <Foundation name="home" size={iconSize} color={props?.state?.index === index ? Color.PRIMARY : Color.INACTIVE} />
+                return <SimpleLineIcons name="home" size={iconSize} color={props?.state?.index === index ? Color.PRIMARY : Color.INACTIVE} />
             case "User":
-                return <MaterialIcons name="explore" size={iconSize} color={props?.state?.index === index ? Color.PRIMARY : Color.INACTIVE} />
+                return <SimpleLineIcons name="menu" size={iconSize} color={props?.state?.index === index ? Color.PRIMARY : Color.INACTIVE} />
             default:
                 return null
         }
@@ -35,7 +35,6 @@ const CustomTab = ({ ...props }) => {
                 onPress={() => handlePress(routeName.name, index)}
             >
                 {handleIcon(routeName.name, index)}
-                <Text style={{ fontSize: fontSize, fontWeight: '400', color: props?.state?.index === index ? Color.PRIMARY : Color.INACTIVE, marginTop: 4, fontSize: props?.state?.index === index ? 13 : 12 }}>{routeName.name}</Text>
             </TouchableOpacity>
         </View>
     )
@@ -47,7 +46,7 @@ const CustomTab = ({ ...props }) => {
     }
     if (props?.state?.routes[props?.state?.index]?.state?.index > 0) return null
     return (
-        <View style={{ width: '100%', height: 70, backgroundColor: Color.WHITE, flexDirection: 'row', borderColor: '#FFFFFF', borderTopColor: '#e3e3e3', borderWidth: 1 }}>
+        <View style={{ width: '100%', height: 70, backgroundColor: Color.WHITE, flexDirection: 'row', borderColor: '#FFFFFF' }}>
             {props?.state?.routes && renderListButton(props.state.routes)}
         </View>
     )

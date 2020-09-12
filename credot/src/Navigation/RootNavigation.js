@@ -2,12 +2,8 @@ import * as React from 'react';
 import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../Container/Home'
-import UserScreen from '../Container/User'
+import { HomeScreen, UserScreen, LoginScreen, RequestLoan, ListLoan, SplashScreens, IntroductionScreen, ImprovePointScreen } from '@Container'
 import CustomHeader from './CustomHeader'
-import LoginScreen from '../Container/Login'
-import RequestLoan from '../Container/RequestLoan'
-import ListLoan from '../Container/ListLoan'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CustomTab from '../Components/CustomTab'
@@ -30,6 +26,7 @@ function HomeScreenStack() {
                 }}
 
             />
+            <HomeStack.Screen name="ImprovePoint" component={ImprovePointScreen} />
             <HomeStack.Screen name="Request" component={RequestLoan} />
             <HomeStack.Screen name="ListLoan" component={ListLoan} />
         </HomeStack.Navigator>
@@ -61,9 +58,17 @@ function RootNavigation() {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName={'Login'}
+                initialRouteName={'Splash'}
                 headerMode="none"
             >
+                <Stack.Screen
+                    name="Splash"
+                    component={SplashScreens}
+                />
+                <Stack.Screen
+                    name="Introduction"
+                    component={IntroductionScreen}
+                />
                 <Stack.Screen
                     name="Application"
                     component={ApplicationStack}

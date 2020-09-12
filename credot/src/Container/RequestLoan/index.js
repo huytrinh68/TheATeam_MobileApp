@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, SafeAreaView, FlatList, Image, TouchableOpacity } from 'react-native'
 import Header from '../../Components/Header'
-import { Constants } from '@Helper'
+import { Constants, Color } from '@Helper'
 
 const RequestLoan = ({ navigation }) => {
     const renderTitle = () => {
@@ -21,8 +21,9 @@ const RequestLoan = ({ navigation }) => {
                 onPress={() => handlePress(item.id)}
                 style={{ width: '100%', paddingTop: 10, paddingBottom: 10 }}>
                 <Image
-                    source={item.image}
-                    style={{ width: '100%', height: 150 }}
+                    // source={item.image}
+                    source={{ uri: 'https://elasticbeanstalk-us-east-1-284064335706.s3.amazonaws.com/thateam/9.png' }}
+                    style={{ width: '100%', height: 150, borderColor: Color.PRIMARY, borderWidth: 1 }}
                     resizeMode={'contain'}
                 />
             </TouchableOpacity>
@@ -40,7 +41,7 @@ const RequestLoan = ({ navigation }) => {
     }
     return (
         <SafeAreaView style={styles.safe_view}>
-            <Header navigation={navigation} useLeft={true}/>
+            <Header navigation={navigation} useLeft={true} />
             {renderTitle()}
             {renderListBank()}
         </SafeAreaView>

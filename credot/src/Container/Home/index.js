@@ -1,25 +1,19 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image } from 'react-native'
-import { Color, LocalImage } from '@Helper'
-import Modal from 'react-native-modal'
-import { ScrollView } from 'react-native-gesture-handler'
+import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native'
+import { Color } from '@Helper'
 import Header from '../../Components/Header'
 import LinearGradient from 'react-native-linear-gradient'
+import { Card } from 'native-base'
+import { useSelector } from 'react-redux'
 
 const HomeScreen = ({ navigation }) => {
-    const [showModal, setShowModal] = useState(false)
 
-    const openModal = () => {
-        setShowModal(true)
-    }
-
-    const closeModal = () => {
-        setShowModal(false)
-    }
-
+    const userInformation = useSelector(state => state.authentication.userInformation)
+    const point = userInformation?.data?.user?.point
+    const { width } = Dimensions.get('window')
     const handlePress = label => {
-        if (label === 'Improve') {
-            openModal()
+        if (label === 'Cải thiện') {
+            navigation.navigate('ImprovePoint')
         }
         else {
             navigation.navigate('Request')
@@ -29,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
     const renderTitle = () => {
         return (
             <View style={styles.view_user_point}>
-                <Text style={styles.text_user_point}>Your credit point</Text>
+                <Text style={styles.text_user_point}>{`Điểm tín dụng của bạn`}</Text>
             </View>
         )
     }
@@ -37,70 +31,61 @@ const HomeScreen = ({ navigation }) => {
 
     const renderOneAction = (label) => {
         return (
-            <TouchableOpacity
-                onPress={() => handlePress(label)}
-                style={styles.touchable_one_action}>
-                <View style={styles.view_one_action}>
-                    <Text style={styles.text_one_action}>{label}</Text>
-                </View>
-            </TouchableOpacity>
+            <Card
+                style={[styles.touchable_one_action, { backgroundColor: label === 'Cải thiện' ? Color.WHITE : Color.PRIMARY }]}
+            >
+                <TouchableOpacity
+                    onPress={() => handlePress(label)}
+                >
+                    <View style={[styles.view_one_action, { backgroundColor: label === 'Cải thiện' ? Color.WHITE : Color.PRIMARY }]}>
+                        <Text style={[styles.text_one_action, { color: label !== 'Cải thiện' ? Color.WHITE : Color.PRIMARY }]}>{label}</Text>
+                    </View>
+                </TouchableOpacity>
+            </Card>
         )
     }
     const renderUserAction = () => {
         return (
             <View style={styles.view_user_action}>
-                {renderOneAction('Improve')}
-                {renderOneAction('Request')}
+                {renderOneAction('Cải thiện')}
+                {renderOneAction('Yêu cầu vay')}
             </View>
         )
     }
+    const handleColorGradient = (point) => {
+        if (point < 630 && point >= 300) {
+            return ['#ff7348', '#ff436c']
+        } else if (point >= 630 && point < 690) {
+            return ['#ffd366', '#ff7348']
+        } else if (point >= 690 && point < 720) {
+            return ['#2cff77', '#00fff8']
+        } else {
+            return ['#00fff8', '#00487b']
+        }
+
+    }
     const renderPoint = () => {
+        const colorGradient = ['#ff0909', '#ff8200', '#fee001', '#a6f20f']
         return (
             <LinearGradient
-                colors={['#ff0909', '#ff8200', '#fee001','#a6f20f']}
+                colors={handleColorGradient(point)}
                 start={{ x: 0.0, y: 1.0 }} end={{ x: 1.0, y: 1.0 }}
-                style={{ height: 200, width: 200, alignItems: 'center', justifyContent: 'center', borderRadius: 100 }}
+                style={{ height: width - 80, width: width - 80, alignItems: 'center', justifyContent: 'center', borderRadius: (width - 80) / 2, marginTop: 50 }}
             >
-                <View style={{ height: 190, width: 190, backgroundColor: '#FFFFFF', borderRadius: 95, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ zIndex: 9999999, color: '#000000', fontSize: 26 }}>720</Text>
+                <View style={{ height: width - 90, width: width - 90, backgroundColor: '#FFFFFF', borderRadius: (width - 90) / 2, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ zIndex: 9999999, color: handleColorGradient(point)[0], fontSize: 70 }}>{point}</Text>
+                    <Text style={{ zIndex: 9999999, color: handleColorGradient(point)[0], fontSize: 30, paddingTop: 5 }}>{userInformation?.data?.user?.title}</Text>
                 </View>
             </LinearGradient>
         )
     }
-    const renderModal = () => {
-        return (
-            <Modal
-                isVisible={showModal}
-                style={{ backgroundColor: '#FFFFFF' }}
-                onBackdropPress={() => closeModal()}
-            >
-                <ScrollView
-                    contentContainerStyle={{ alignItems: 'center', paddingTop: 30, paddingLeft: 10, paddingRight: 10 }}
-                >
-                    <Image
-                        source={LocalImage.improve_point}
-                        style={{ width: 200, height: 200 }}
-                    />
-                    <Text style={{ fontSize: 16, fontWeight: '600', paddingTop: 30 }}>How Credit Scores Are Calculated</Text>
-                    <Text style={{ paddingTop: 15, paddingBottom: 50 }}>
-                        You likely have dozens, if not hundreds, of credit scores. That's because a credit score is calculated by applying a mathematical algorithm to the information in one of your three credit reports, and there is no one uniform algorithm employed by all lenders or other financial companies to compute the scores. (Some credit scoring models are very common, like the FICO® Score☉ , which ranges from 300 to 850.)
-
-                        You don't have to get hung up on having multiple scores, though, because the factors that make your scores go up or down in different scoring models are usually similar. "What makes one score go up versus down is always going to be the same—it just depends on the degree," says Barry Paperno, a consumer credit expert.
-
-                        Most scoring models take into account your payment history on loans and credit cards, how much revolving credit you regularly use, how long you've had accounts open, the types of accounts you have and how often you apply for new credit.
-        </Text>
-                </ScrollView>
-            </Modal>
-        )
-    }
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-            <View style={{ alignItems: 'center' }}>
+            <View style={{ alignItems: 'center', flex: 1 }}>
                 <Header navigation={navigation} useLeft={false} />
                 {renderTitle()}
                 {renderPoint()}
                 {renderUserAction()}
-                {renderModal()}
             </View>
         </SafeAreaView>
     )
@@ -111,19 +96,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        position: 'absolute',
+        bottom: 10
     },
     view_one_action: {
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#FFFFFF',
-        paddingTop: 20,
-        paddingBottom: 20,
+        paddingTop: 15,
+        paddingBottom: 15,
         borderRadius: 35,
     },
     touchable_one_action: {
-        backgroundColor: Color.PRIMARY,
+        // backgroundColor: Color.PRIMARY,
         width: '45%',
         borderRadius: 35,
         padding: 2
@@ -135,7 +122,8 @@ const styles = StyleSheet.create({
     },
     text_user_point: {
         fontSize: 22,
-        paddingTop: 20
+        paddingTop: 20,
+        color: Color.PRIMARY
     },
 
 })

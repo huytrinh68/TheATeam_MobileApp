@@ -1,5 +1,11 @@
 import TouchableScale from './TouchableScale'
+import Header from './Header'
+import AppProvider from './AppProvider'
+import AppConsumer from './AppProvider'
 
 export {
-    TouchableScale
+    Header,
+    TouchableScale,
+    AppConsumer,
+    AppProvider
 }

@@ -3,17 +3,19 @@
 RN0.63
 */
 
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, TextInput, Platform, SafeAreaView, KeyboardAvoidingView } from 'react-native'
 import { Card, Icon } from 'native-base'
-import { Color, LocalImage } from '@Helper'
+import { Color, LocalImage, Storage } from '@Helper'
 import { TouchableScale } from '@Components'
+import { loginAction } from '@Redux/AuthenticationRedux'
+import { useDispatch } from 'react-redux'
+import Identify from '../../Helper/Identify'
 
+let dataLogin = {}
 const LoginScreen = ({ navigation }) => {
-    let dataLogin = {}
-
-
-
+    const [statusField, setStatusField] = useState({ phone: false, password: false })
+    const dispatch = useDispatch()
     const headerScreen = () => {
         return (
             <Image
@@ -23,22 +25,34 @@ const LoginScreen = ({ navigation }) => {
             />
         )
     }
+    
     const handleChangeText = (type, data) => {
         dataLogin[type] = data
     }
 
+    const changeStatus = (type, value) => {
+        let newStatus = {
+            phone: false,
+            password: false
+        }
+        newStatus[type] = value
+        setStatusField(newStatus)
+    }
     const fieldLogin = (type, icon, placeholder) => {
         return (
-            <Card style={styles.card_input}>
+            <Card style={[styles.card_input, { borderColor: statusField[type] ? Color.PRIMARY : Color.INACTIVE }]}>
                 <Icon
                     type={'AntDesign'}
                     name={icon}
-                    style={styles.icon_input}
+                    style={[styles.icon_input, { color: statusField[type] ? Color.PRIMARY : Color.INACTIVE }]}
                 />
                 <TextInput
                     onChangeText={text => handleChangeText(type, text)}
                     placeholder={placeholder}
                     style={styles.input_field}
+                    secureTextEntry={type === 'password' ? true : false}
+                    onFocus={() => changeStatus(type, true)}
+                    onEndEditing={() => changeStatus(type, false)}
                 />
             </Card>
         )
@@ -53,9 +67,30 @@ const LoginScreen = ({ navigation }) => {
         )
     }
 
+
     const handleAction = (type) => {
         if (type === 'login') {
-            navigation.navigate('Application')
+            if (!dataLogin.phone || !dataLogin.password) {
+                global.props.showToast('Vui lòng điền đầy đủ thông tin và thử lại!')
+                return null
+            }
+            if (!Identify.validatePhoneNumber(dataLogin.phone)) {
+                global.props.showToast('Số điện thoại chưa đúng!')
+                return null
+            }
+            else {
+                global.props.showLoading()
+                dispatch(loginAction(dataLogin)).then(res => {
+                    global.props.hideLoading()
+                    if (res.status) {
+                        Storage.saveAutoLoginInfo(dataLogin)
+                        navigation.navigate('Application')
+                    }
+                    else {
+                        global.props.alert(res.messsage, true, false, false, () => { })
+                    }
+                })
+            }
         }
         else if (type === 'signup') {
             handleNavigate('Register')
@@ -72,11 +107,11 @@ const LoginScreen = ({ navigation }) => {
             </TouchableScale>
         )
     }
+
     const submitLogin = () => {
         return (
             <View style={styles.view_submitLogin}>
                 {itemButon('ĐĂNG NHẬP', 'login', Color.PRIMARY)}
-                {/* {itemButon('FB LOGIN', 'fblogin', '#3b5998')} */}
                 <View style={styles.view_otherway}>
                     <View style={styles.view_otherline} />
                     <Text>{`HOẶC`}</Text>
