@@ -47,6 +47,7 @@ const connectionAPI = ({ url, method = 'GET', params, header }) => {
             bodyFormData.length > 0 ? bodyFormData : null
         )
         .then((res) => {
+            console.log(res)
             let data = null
             try {
                 data = JSON.parse(res.text());

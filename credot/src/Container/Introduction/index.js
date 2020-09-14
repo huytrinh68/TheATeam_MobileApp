@@ -43,6 +43,7 @@ const IntroductionScreen = ({ navigation }) => {
         onDone={() => _onDone()}
         renderDoneButton={() => _renderDoneButton()}
         renderNextButton={() => _renderNextButton()}
+        activeDotStyle={{ backgroundColor: Color.PRIMARY }}
     />
 }
 const styles = StyleSheet.create({
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 22,
         paddingTop: 10,
-        color:Color.PRIMARY
+        color: Color.PRIMARY
     },
     image: {
         width: 200,
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 12,
         paddingTop: 20,
-        color:Color.PRIMARY
+        color: Color.PRIMARY
     },
     view_nextButton: {
         alignItems: 'center',

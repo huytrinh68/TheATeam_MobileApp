@@ -8,6 +8,10 @@ target 'credot' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'react-native-orientation', :path => '../node_modules/react-native-orientation'
+
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'credotTests' do
     inherit! :complete
     # Pods for testing

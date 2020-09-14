@@ -10,7 +10,7 @@ const RequestLoan = ({ navigation }) => {
     const dispatch = useDispatch()
     const listLoan = useSelector(state => state.requestLoan.listLoan?.data || [])
     useEffect(() => {
-        if (listLoan) return
+        // if (listLoan) return
         global.props.showLoading()
         dispatch(getLoan()).then(res => {
             global.props.hideLoading()

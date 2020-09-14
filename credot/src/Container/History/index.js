@@ -14,8 +14,9 @@ const HistoryScreen = ({ navigation }) => {
     const userInformation = useSelector(state => state.authentication.userInformation || [])
     const { width, height } = Dimensions.get('window')
 
+    console.log(userInformation)
     useEffect(() => {
-        if (listHistory) return
+        // if (listHistory) return
         global.props.showLoading()
         dispatch(historyRequest()).then(res => {
             global.props.hideLoading()
