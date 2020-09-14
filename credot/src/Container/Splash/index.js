@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Storage } from '@Helper'
+import { Storage, NavigationActions } from '@Helper'
 import SplashScreen from 'react-native-splash-screen'
 import { loginAction } from '@Redux/AuthenticationRedux'
 import { useDispatch } from 'react-redux'
@@ -10,7 +10,7 @@ const SplashScreens = ({ navigation }) => {
     useEffect(() => {
         Storage.getData('first_open').then(res => {
             if (!res) {
-                navigation.navigate('Introduction')
+                NavigationActions.openPage(navigation, 'Introduction')
                 SplashScreen.hide()
             }
             else {
@@ -18,7 +18,7 @@ const SplashScreens = ({ navigation }) => {
                     if (res) {
                         dispatch(loginAction(res)).then(res => {
                             if (res.status) {
-                                navigation.navigate('Application')
+                                NavigationActions.openPage(navigation, 'Application')
                             }
                             else {
                                 global.props.alert(res.messsage, true, false, false, () => { })
@@ -26,13 +26,14 @@ const SplashScreens = ({ navigation }) => {
                         })
                     }
                     else {
-                        navigation.navigate('Login')
+                        NavigationActions.openPage(navigation, 'Authentication')
                     }
                     SplashScreen.hide()
                 })
             }
         })
     }, [])
+    // NavigationActions.openPage(navigation, 'Authentication')
     return null
 }
 export default SplashScreens

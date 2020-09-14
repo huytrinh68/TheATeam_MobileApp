@@ -1,41 +1,56 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, FlatList, Image, TouchableOpacity } from 'react-native'
-import Header from '../../Components/Header'
-import { Constants, Color } from '@Helper'
+import { Header, TouchableScale } from '@Components'
+import { Color, NavigationActions } from '@Helper'
+import { getLoan } from '@Redux/RequestLoanRedux'
+import { useSelector, useDispatch } from 'react-redux'
+import { Card } from 'native-base'
 
 const RequestLoan = ({ navigation }) => {
+    const dispatch = useDispatch()
+    const listLoan = useSelector(state => state.requestLoan.listLoan?.data || [])
+    useEffect(() => {
+        if (listLoan) return
+        global.props.showLoading()
+        dispatch(getLoan()).then(res => {
+            global.props.hideLoading()
+        })
+    }, [])
+
     const renderTitle = () => {
         return (
-            <View style={{ width: '100%', alignItems: 'center', paddingTop: 20, paddingBottom: 10 }}>
-                <Text style={{ fontSize: 20, fontWeight: '300', paddingBottom: 10 }}>Your Lender</Text>
-                <Text style={{ fontSize: 12, color: '#88afc7' }}>Which bank or institution you want to borrow from?</Text>
+            <View style={{ width: '100%', alignItems: 'center', paddingTop: 30, paddingBottom: 10 }}>
+                <Text style={{ fontSize: 15, color: '#88afc7', textAlign: 'center' }}>{`Chọn ngân hàng mà bạn muốn sử dụng dịch vụ:`}</Text>
             </View>
         )
     }
-    const handlePress = id => {
-        navigation.navigate('ListLoan')
+    const handlePress = item => {
+        NavigationActions.openPage(navigation, 'ListLoan', item)
     }
     const renderItem = (item) => {
         return (
-            <TouchableOpacity
-                onPress={() => handlePress(item.id)}
-                style={{ width: '100%', paddingTop: 10, paddingBottom: 10 }}>
-                <Image
-                    // source={item.image}
-                    source={{ uri: 'https://elasticbeanstalk-us-east-1-284064335706.s3.amazonaws.com/thateam/9.png' }}
-                    style={{ width: '100%', height: 150, borderColor: Color.PRIMARY, borderWidth: 1 }}
-                    resizeMode={'contain'}
-                />
-            </TouchableOpacity>
+            <TouchableScale
+                onPress={() => handlePress(item)}>
+                <Card style={{ borderRadius: 30, alignItems: 'center', paddingBottom: 30 }}>
+                    <Image
+                        source={{ uri: item.logo }}
+                        style={{ width: '100%', height: 150 }}
+                        resizeMode={'contain'}
+                    />
+                    <Text style={{ color: Color.PRIMARY, paddingLeft: 20, paddingRight: 20 }}>{item.name}</Text>
+                </Card>
+            </TouchableScale>
         )
     }
 
     const renderListBank = () => {
         return (
             <FlatList
-                data={Constants.listBank}
+                data={listLoan}
                 renderItem={({ item, index }) => renderItem(item)}
                 keyExtractor={(item, index) => `flat_${index}`}
+                contentContainerStyle={{ padding: 20 }}
+                ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             />
         )
     }
@@ -43,7 +58,7 @@ const RequestLoan = ({ navigation }) => {
         <SafeAreaView style={styles.safe_view}>
             <Header navigation={navigation} useLeft={true} />
             {renderTitle()}
-            {renderListBank()}
+            {listLoan && listLoan.length > 0 && renderListBank()}
         </SafeAreaView>
     )
 }

@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Dimensions, BackHandler } from 'react-native'
 import { Color } from '@Helper'
 import Header from '../../Components/Header'
 import LinearGradient from 'react-native-linear-gradient'
@@ -11,8 +11,20 @@ const HomeScreen = ({ navigation }) => {
     const userInformation = useSelector(state => state.authentication.userInformation)
     const point = userInformation?.data?.user?.point
     const { width } = Dimensions.get('window')
+
+    const backAction = () => {
+        global.props.alert("Bạn có chắc muốn thoát ứng dụng?", true, true, false, () => BackHandler.exitApp())
+    };
+
+    useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", backAction);
+
+        return () =>
+            BackHandler.removeEventListener("hardwareBackPress", backAction);
+    }, []);
+
     const handlePress = label => {
-        if (label === 'Cải thiện') {
+        if (label === 'Cải thiện điểm') {
             navigation.navigate('ImprovePoint')
         }
         else {
@@ -32,13 +44,13 @@ const HomeScreen = ({ navigation }) => {
     const renderOneAction = (label) => {
         return (
             <Card
-                style={[styles.touchable_one_action, { backgroundColor: label === 'Cải thiện' ? Color.WHITE : Color.PRIMARY }]}
+                style={[styles.touchable_one_action, { backgroundColor: label === 'Cải thiện điểm' ? Color.WHITE : Color.PRIMARY }]}
             >
                 <TouchableOpacity
                     onPress={() => handlePress(label)}
                 >
-                    <View style={[styles.view_one_action, { backgroundColor: label === 'Cải thiện' ? Color.WHITE : Color.PRIMARY }]}>
-                        <Text style={[styles.text_one_action, { color: label !== 'Cải thiện' ? Color.WHITE : Color.PRIMARY }]}>{label}</Text>
+                    <View style={[styles.view_one_action, { backgroundColor: label === 'Cải thiện điểm' ? Color.WHITE : Color.PRIMARY }]}>
+                        <Text style={[styles.text_one_action, { color: label !== 'Cải thiện điểm' ? Color.WHITE : Color.PRIMARY }]}>{label}</Text>
                     </View>
                 </TouchableOpacity>
             </Card>
@@ -47,7 +59,7 @@ const HomeScreen = ({ navigation }) => {
     const renderUserAction = () => {
         return (
             <View style={styles.view_user_action}>
-                {renderOneAction('Cải thiện')}
+                {renderOneAction('Cải thiện điểm')}
                 {renderOneAction('Yêu cầu vay')}
             </View>
         )

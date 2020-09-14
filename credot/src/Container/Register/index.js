@@ -4,16 +4,19 @@ RN0.63
 */
 
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, TextInput, Platform, SafeAreaView, KeyboardAvoidingView } from 'react-native'
+import { View, Text, StyleSheet, Image, TextInput, SafeAreaView } from 'react-native'
 import { Card, Icon } from 'native-base'
-import { Color, LocalImage, Storage, NavigationActions } from '@Helper'
+import { Color, LocalImage, Storage, NavigationActions, Identify } from '@Helper'
 import { TouchableScale } from '@Components'
-import { loginAction } from '@Redux/AuthenticationRedux'
+import { registerUser } from '@Redux/AuthenticationRedux'
 import { useDispatch } from 'react-redux'
-import Identify from '../../Helper/Identify'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
+import ModalPicker from './modalPicker'
 
-let dataLogin = {}
-const LoginScreen = ({ navigation }) => {
+let dataRegister = {}
+const RegisterScreen = ({ navigation }) => {
+    const [show, setShow] = useState(false)
+    const [date, setDate] = useState('')
     const [statusField, setStatusField] = useState({ phone: false, password: false })
     const dispatch = useDispatch()
     const headerScreen = () => {
@@ -27,7 +30,7 @@ const LoginScreen = ({ navigation }) => {
     }
 
     const handleChangeText = (type, data) => {
-        dataLogin[type] = data
+        dataRegister[type] = data
     }
 
     const changeStatus = (type, value) => {
@@ -50,41 +53,84 @@ const LoginScreen = ({ navigation }) => {
                     onChangeText={text => handleChangeText(type, text)}
                     placeholder={placeholder}
                     style={styles.input_field}
-                    secureTextEntry={type === 'password' ? true : false}
+                    secureTextEntry={type === 'password' || type === 'repassword' ? true : false}
                     onFocus={() => changeStatus(type, true)}
                     onEndEditing={() => changeStatus(type, false)}
+                    autoCorrect={false}
+                    selectionColor={type === 'dob' ? Color.WHITE : Color.PRIMARY}
+                    placeholderTextColor={Color.INACTIVE}
+                    textContentType={'oneTimeCode'}
                 />
             </Card>
+        )
+    }
+
+    const openModal = () => {
+        setShow(true)
+    }
+
+    const closeModal = () => {
+        setShow(false)
+    }
+
+    const fieldCalendar = (type, icon, placeholder) => {
+        return (
+            <TouchableScale
+                onPress={() => openModal()}
+            >
+                <Card style={[styles.card_input, { borderColor: statusField[type] ? Color.PRIMARY : Color.INACTIVE }]}>
+                    <Icon
+                        type={'AntDesign'}
+                        name={icon}
+                        style={[styles.icon_input, { color: statusField[type] ? Color.PRIMARY : Color.INACTIVE }]}
+                    />
+                    <View style={[styles.input_field, { justifyContent: 'center' }]}>
+                        <Text style={{ color: date ? Color.PRIMARY : Color.INACTIVE }}>{date ? date : placeholder}</Text>
+                    </View>
+                </Card>
+            </TouchableScale>
         )
     }
 
     const formLogin = () => {
         return (
             <View style={styles.view_formLogin}>
-                {fieldLogin('phone', 'user', 'Số điện thoại')}
+                {fieldLogin('name', 'user', 'Họ và tên')}
+                {fieldLogin('phone', 'phone', 'Số điện thoại')}
+                {fieldCalendar('dob', 'calendar', 'Ngày sinh')}
+                {fieldLogin('address', 'home', 'Địa chỉ')}
                 {fieldLogin('password', 'lock', 'Mật khẩu')}
+                {fieldLogin('repassword', 'lock', 'Nhập lại mật khẩu')}
             </View>
         )
     }
 
 
     const handleAction = (type) => {
-        if (type === 'login') {
-            if (!dataLogin.phone || !dataLogin.password) {
+        if (type === 'signup') {
+            if (!dataRegister.name || !dataRegister.phone || !dataRegister.dob || !dataRegister.address || !dataRegister.password || !dataRegister.repassword) {
                 global.props.showToast('Vui lòng điền đầy đủ thông tin và thử lại!')
                 return null
             }
-            if (!Identify.validatePhoneNumber(dataLogin.phone)) {
+            if (!Identify.validatePhoneNumber(dataRegister.phone)) {
                 global.props.showToast('Số điện thoại chưa đúng!')
+                return null
+            }
+            if(dataRegister.password !== dataRegister.repassword) {
+                global.props.showToast('Mật khẩu không trùng khớp!')
                 return null
             }
             else {
                 global.props.showLoading()
-                dispatch(loginAction(dataLogin)).then(res => {
+                dispatch(registerUser(dataRegister)).then(res => {
                     global.props.hideLoading()
                     if (res.status) {
-                        Storage.saveAutoLoginInfo(dataLogin)
-                        NavigationActions.openPage(navigation, 'Application')
+                        let dataToSave = {
+                            phone: dataRegister.phone,
+                            password:dataRegister.password
+                        }
+                        Storage.saveAutoLoginInfo(dataToSave)
+                        global.props.alert('Đăng ký tài khoản thành công!', true, false, false, () => NavigationActions.openPage(navigation, 'Application'))
                     }
                     else {
                         global.props.alert(res.messsage, true, false, false, () => { })
@@ -92,8 +138,8 @@ const LoginScreen = ({ navigation }) => {
                 })
             }
         }
-        else if (type === 'signup') {
-            NavigationActions.openPage(navigation, 'Register')
+        else if (type === 'back') {
+            NavigationActions.backToPreviousPage(navigation)
         }
     }
 
@@ -111,29 +157,36 @@ const LoginScreen = ({ navigation }) => {
     const submitLogin = () => {
         return (
             <View style={styles.view_submitLogin}>
-                {itemButon('ĐĂNG NHẬP', 'login', Color.PRIMARY)}
-                <View style={styles.view_otherway}>
-                    <View style={styles.view_otherline} />
-                    <Text>{`HOẶC`}</Text>
-                    <View style={styles.view_otherline} />
-                </View>
-                {itemButon('ĐĂNG KÝ TÀI KHOẢN MỚI', 'signup', Color.WHITE, Color.PRIMARY)}
+                {itemButon('ĐĂNG KÝ', 'signup', Color.PRIMARY)}
+                {itemButon('QUAY LẠI ĐĂNG NHẬP', 'back', Color.WHITE, Color.PRIMARY)}
             </View>
         )
     }
 
+    const getData = data => {
+        dataRegister['dob'] = data
+        setDate(data)
+    }
+
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.view_container}>
-                {headerScreen()}
-                {formLogin()}
-                {submitLogin()}
-            </View>
-        </SafeAreaView>
+        <KeyboardAwareScrollView style={styles.advoid}>
+            <SafeAreaView style={styles.container}>
+                <View style={styles.view_container}>
+                    {headerScreen()}
+                    {formLogin()}
+                    {submitLogin()}
+                    <ModalPicker show={show} getData={(data) => getData(data)} closeModalInOutSide={() => closeModal()} />
+                </View>
+            </SafeAreaView>
+        </KeyboardAwareScrollView>
     )
 }
 
 const styles = StyleSheet.create({
+    advoid: {
+        flex: 1,
+        backgroundColor: Color.WHITE,
+    },
     container: {
         flex: 1,
         backgroundColor: Color.WHITE
@@ -153,12 +206,13 @@ const styles = StyleSheet.create({
     input_field: {
         height: 45,
         width: '90%',
-        paddingLeft: 10
+        paddingLeft: 10,
+        color: Color.PRIMARY
 
     },
     view_formLogin: {
         width: '100%',
-        marginTop: 50
+        marginTop: 10
     },
     card_input: {
         flexDirection: 'row',
@@ -175,7 +229,7 @@ const styles = StyleSheet.create({
     },
     view_submitLogin: {
         width: '100%',
-        marginTop: 40
+        marginTop: 20
     },
     touchable_submitLogin: {
         backgroundColor: Color.PRIMARY,
@@ -183,7 +237,8 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 30
+        borderRadius: 30,
+        marginBottom: 20
     },
     text_submitLogin: {
         color: Color.WHITE,
@@ -201,4 +256,4 @@ const styles = StyleSheet.create({
         width: '40%'
     }
 })
-export default LoginScreen
+export default RegisterScreen

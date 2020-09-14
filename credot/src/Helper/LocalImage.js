@@ -10,5 +10,10 @@ const LocalImage = {
     improve4: require('../../image/improve4.png'),
     improve5: require('../../image/improve5.png'),
     improve6: require('../../image/improve6.png'),
+    success: require('../../image/success.png'),
+    step1: require('../../image/step1.png'),
+    step2: require('../../image/step2.png'),
+    step3: require('../../image/step3.png'),
+    step4: require('../../image/step4.png'),
 }
 export default LocalImage

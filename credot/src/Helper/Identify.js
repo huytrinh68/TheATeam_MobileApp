@@ -40,4 +40,10 @@ export default class Identify {
         var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
         return vnf_regex.test(phone)
     }
+    static handlePrice = (price) => {
+        if (price == null) return ''
+        let num = Number(price).toFixed(0)
+        num = (num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'))
+        return num
+    }
 }

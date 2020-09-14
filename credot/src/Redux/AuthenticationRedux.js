@@ -1,4 +1,4 @@
-import { Storage, Identify } from '@Helper'
+import { Identify } from '@Helper'
 import ConnectionAPI from '@Connection'
 
 import { DefineAPI } from '@Helper'
@@ -29,8 +29,19 @@ export const loginAction = (params) => async (dispatch, getState) => {
             Identify.userToken = response?.data?.token
             dispatch(saveDataReduxAuthentication(ActionTypesAuthentication.USER_INFORMATION, response))
         }
-        else {
-            console.log(response)
+        return response
+
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+export const registerUser = (params) => async (dispatch, getState) => {
+    try {
+        const response = await ConnectionAPI({ url: DefineAPI.REGISTER, method: 'PUT', params })
+        if (response.status) {
+            Identify.userToken = response?.data?.token
+            dispatch(saveDataReduxAuthentication(ActionTypesAuthentication.USER_INFORMATION, response))
         }
         return response
 

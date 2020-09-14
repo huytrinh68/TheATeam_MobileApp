@@ -1,11 +1,7 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import Foundation from 'react-native-vector-icons/Foundation'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
-import Feather from 'react-native-vector-icons/Feather'
 import { Color } from '@Helper'
 
 const CustomTab = ({ ...props }) => {
@@ -13,9 +9,9 @@ const CustomTab = ({ ...props }) => {
 
     const handleIcon = (routeName, index) => {
         switch (routeName) {
-            case "Home":
+            case "HomeStack":
                 return <SimpleLineIcons name="home" size={iconSize} color={props?.state?.index === index ? Color.PRIMARY : Color.INACTIVE} />
-            case "User":
+            case "UserStack":
                 return <SimpleLineIcons name="menu" size={iconSize} color={props?.state?.index === index ? Color.PRIMARY : Color.INACTIVE} />
             default:
                 return null
@@ -45,6 +41,7 @@ const CustomTab = ({ ...props }) => {
         return listIcon
     }
     if (props?.state?.routes[props?.state?.index]?.state?.index > 0) return null
+
     return (
         <View style={{ width: '100%', height: 70, backgroundColor: Color.WHITE, flexDirection: 'row', borderColor: '#FFFFFF' }}>
             {props?.state?.routes && renderListButton(props.state.routes)}

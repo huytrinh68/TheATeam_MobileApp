@@ -1,26 +1,70 @@
-import React from 'react'
-import { View, Text, FlatList, SafeAreaView, Dimensions } from 'react-native'
-import { Constants } from '@Helper'
-import ItemCard from '../../Components/ItemCard'
+import React, { useState } from 'react'
+import { View, Text, FlatList, SafeAreaView, Dimensions, StyleSheet } from 'react-native'
+import { Constants, Color } from '@Helper'
+import { ItemCard, TouchableScale, Header } from '@Components'
 import Carousel from 'react-native-snap-carousel';
-import Header from '../../Components/Header';
+import Modal from 'react-native-modal'
+import { Card, Icon } from 'native-base'
 
 const { width, height } = Dimensions.get('window')
-const ListLoan = ({ navigation }) => {
+const ListLoan = ({ navigation, route }) => {
+
     const renderItem = ({ item, index }) => {
-        return <ItemCard item={item} />
+        return <ItemCard item={item} navigation={navigation} bankData={route?.params}/>
     }
+
+    const title = () => {
+        return (
+            <Text style={styles.textTitle}>Gói vay dành cho bạn:</Text>
+        )
+    }
+
+    
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-            <Header navigation={navigation} useLeft={true}/>
-            <Carousel
-                data={Constants.suggestionLoan}
-                renderItem={renderItem}
-                sliderWidth={width}
-                itemWidth={300}
-                contentContainerCustomStyle={{paddingTop:100}}
-            />
+            <Header navigation={navigation} useLeft={true} />
+            <View style={styles.viewContent}>
+                {title()}
+                <Carousel
+                    data={route?.params?.listSuggest}
+                    renderItem={renderItem}
+                    sliderWidth={width}
+                    itemWidth={300}
+                    contentContainerCustomStyle={{ paddingTop: 30 }}
+                />
+            </View>
         </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    viewContent: {
+        padding: 20
+    },
+    textTitle: {
+        textAlign: 'center',
+        fontSize: 20,
+        color: Color.PRIMARY
+    },
+    card: {
+        marginTop: 20,
+        padding: 20,
+        borderRadius: 30,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    textReason: {
+        color: Color.INACTIVE,
+    },
+    fontIcon: {
+        color: Color.PRIMARY,
+        fontSize: 18
+    },
+    view_modal: {
+        width: '100%',
+        height: 400,
+        backgroundColor: Color.WHITE,
+        borderRadius: 40
+    }
+})
 export default ListLoan

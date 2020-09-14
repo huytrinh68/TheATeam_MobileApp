@@ -3,14 +3,11 @@ import { Identify } from '@Helper'
 import { BackHandler } from 'react-native'
 
 const connectionAPI = ({ url, method = 'GET', params, header }) => {
-    console.log(header)
-
     const setHeader = () => {
 
         let _headers = {};
         if (header) {
             _headers = { ...header }
-            // _headers['Authorization'] = Identify.userToken;
         }
         return _headers;
     }
@@ -26,12 +23,13 @@ const connectionAPI = ({ url, method = 'GET', params, header }) => {
             }).join('&');
             _fullUrl += "?" + getParams;
         }
+        console.log(_fullUrl)
         return _fullUrl;
     }
 
     let bodyFormData = [];
 
-    if (method === 'POST') {
+    if (method === 'POST' || method === 'PUT') {
         Object.keys(params).forEach(key => {
             if (params[key]) {
                 bodyFormData.push({ name: key, data: params[key].toString() });
@@ -54,7 +52,7 @@ const connectionAPI = ({ url, method = 'GET', params, header }) => {
                 data = JSON.parse(res.text());
             }
             catch (err) {
-                console.log(err)
+                global.props.alert('Có lỗi xảy ra!', true, false, false, () => BackHandler.exitApp(), 'Vui lòng thử lại sau.')
                 data = {
                     data: {
                         success: false

@@ -1,9 +1,11 @@
 const LOGIN = 'api/login';
 const REGISTER = 'api/register';
-const LOAN = 'api/loan';
+const BANK = 'api/bank';
+const LOAN = 'api/loan'
 
 export {
     LOGIN,
     REGISTER,
+    BANK,
     LOAN
 }

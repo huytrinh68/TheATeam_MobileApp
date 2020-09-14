@@ -97,24 +97,27 @@ const suggestionLoan = [
 const introductionData = [
     {
         id: '1',
-        title: 'What Is a Credit Score?',
-        text: `A credit score is a number between 300–850 that depicts a consumer's creditworthiness. The higher the score, the better a borrower looks to potential lenders. A credit score is based on credit history: number of open accounts, total levels of debt, and repayment history, and other factors. Lenders use credit scores to evaluate the probability that an individual will repay loans in a timely manner.`,
-        color: '#00C09B',
-        image: LocalImage.stories
+        text:'Đăng nhập vào tài khoản Credot của bạn',
+        title: 'Bước 1',
+        image: LocalImage.step1
     },
     {
         id: '2',
-        title: 'How Credit Scores Work?',
-        text: `A credit score can significantly affect your financial life. It plays a key role in a lender's decision to offer you credit. People with credit scores below 640, for example, are generally considered to be subprime borrowers. Lending institutions often charge interest on subprime mortgages at a rate higher than a conventional mortgage in order to compensate themselves for carrying more risk. They may also require a shorter repayment term or a co-signer for borrowers with a low credit score.`,
-        color: '#009AAC',
-        image: LocalImage.stories
+        text:'Xem điểm tín dụng của bạn trên màn hình chính',
+        image: LocalImage.step2,
+        title: 'Bước 2'
     },
     {
         id: '3',
-        title: 'How to Improve Your Credit Score?',
-        text: `When information is updated on a borrower’s credit report, their credit score changes and can rise or fall based on new information`,
-        image: LocalImage.stories,
-        color: '#0070A3',
+        text: `Gửi yêu cầu vay tiền cho ngân hàng`,
+        image: LocalImage.step3,
+        title: 'Bước 3'
+    },
+    {
+        id: '3',
+        text: `Theo dõi tình trạng gói vay của bạn`,
+        image: LocalImage.step4,
+        title: 'Bước 4'
     },
 ]
 
@@ -156,9 +159,49 @@ const improvePoint = [
         content: 'Nạp một lần lượng tiền mà bạn sẽ sử dụng trong một tháng, hạn chế nạp nhiều khoản tiền vụn vặt nếu không cần thiết đối với thuê bao trả trước.'
     },
 ]
+
+const reasonRequest = [
+    {
+        id: '1',
+        label: 'Tiêu dùng tín chấp'
+    },
+    {
+        id: '2',
+        label: 'Sửa nhà'
+    },
+    {
+        id: '3',
+        label: 'Mua ô tô'
+    },
+    {
+        id: '4',
+        label: 'Mua xe máy'
+    },
+    {
+        id: '5',
+        label: 'Nộp học phí'
+    },
+    {
+        id: '6',
+        label: 'Trả tiền thuê nhà'
+    },
+    {
+        id: '7',
+        label: 'Chứng minh tài chính'
+    },
+    {
+        id: '8',
+        label: 'Vay vốn kinh doanh'
+    },
+    {
+        id: '9',
+        label: 'Khác'
+    },
+]
 export {
     listBank,
     suggestionLoan,
     introductionData,
-    improvePoint
+    improvePoint,
+    reasonRequest
 }

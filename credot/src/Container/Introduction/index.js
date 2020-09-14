@@ -7,7 +7,7 @@ import { Icon } from 'native-base'
 const IntroductionScreen = ({ navigation }) => {
     const _renderItem = ({ item }) => {
         return (
-            <View style={[styles.slide, { backgroundColor: item.color }]}>
+            <View style={styles.slide}>
                 <Image source={item.image} style={styles.image} />
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.text}>{item.text}</Text>
@@ -17,7 +17,7 @@ const IntroductionScreen = ({ navigation }) => {
 
     const _onDone = () => {
         Storage.saveData('first_open', 'true').then(() => {
-            navigation.navigate('Login')
+            navigation.navigate('Authentication')
         })
     }
 
@@ -51,12 +51,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 100,
         paddingLeft: 20,
-        paddingRight: 20
+        paddingRight: 20,
+        backgroundColor: Color.WHITE
     },
     title: {
-        fontWeight: 'bold',
         fontSize: 22,
-        paddingTop: 10
+        paddingTop: 10,
+        color:Color.PRIMARY
     },
     image: {
         width: 200,
@@ -64,7 +65,8 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 12,
-        paddingTop: 20
+        paddingTop: 20,
+        color:Color.PRIMARY
     },
     view_nextButton: {
         alignItems: 'center',
@@ -79,7 +81,6 @@ const styles = StyleSheet.create({
     icon_next: {
         color: Color.PRIMARY,
         fontSize: 40,
-        color: Color.WHITE
     }
 })
 export default IntroductionScreen
