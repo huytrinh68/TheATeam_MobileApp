@@ -10,7 +10,7 @@ import ImprovePointScreen from './ImprovePoint'
 import DetailLoanScreen from './DetailLoan'
 import RequestSuccessScreen from './RequestSuccess'
 import HistoryScreen from './History'
-
+import UserInformationScreen from './UserInformation'
 
 export {
     HomeScreen,
@@ -24,5 +24,6 @@ export {
     ImprovePointScreen,
     DetailLoanScreen,
     RequestSuccessScreen,
-    HistoryScreen
+    HistoryScreen,
+    UserInformationScreen
 }

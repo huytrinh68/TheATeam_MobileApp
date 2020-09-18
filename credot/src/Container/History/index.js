@@ -13,9 +13,7 @@ const HistoryScreen = ({ navigation }) => {
     const listHistory = useSelector(state => state.requestLoan.listHistory || [])
     const userInformation = useSelector(state => state.authentication.userInformation || [])
     const { width, height } = Dimensions.get('window')
-
     useEffect(() => {
-        if (listHistory) return
         global.props.showLoading()
         dispatch(historyRequest()).then(res => {
             global.props.hideLoading()
@@ -47,14 +45,14 @@ const HistoryScreen = ({ navigation }) => {
                         start={{ x: 0.0, y: 1.0 }} end={{ x: 1.0, y: 1.0 }}
                         style={{ height: '100%', width: width, alignItems: 'center', justifyContent: 'center' }}
                     >
-                        <Text style={{ fontSize: 22, color: Color.WHITE }}>{`Chi tiết khoản vay`}</Text>
+                        <Text style={{ fontSize: 22, color: Color.WHITE,fontFamily:'Comfortaa' }}>{`Chi tiết khoản vay`}</Text>
                     </LinearGradient>
                 </View>
                 <View style={{ height: '80%', paddingTop: 20 }}>
                     {oneRow('Thời gian', item?.createdAt)}
                     {oneRow('Trạng thái', item?.status)}
                     {oneRow('Mã yêu cầu', item?._id)}
-                    {oneRow('Tên người vay', userData.id)}
+                    {oneRow('Tên người vay', userData.name)}
                     {oneRow('Số điện thoại', userData.phone)}
                     {oneRow('Ngân hàng', item?.bankName)}
                     {oneRow('Số tiền', Identify.handlePrice(item?.money))}

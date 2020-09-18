@@ -13,7 +13,8 @@ import {
     RegisterScreen,
     DetailLoanScreen,
     RequestSuccessScreen,
-    HistoryScreen
+    HistoryScreen,
+    UserInformationScreen
 } from '@Container'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CustomTab from '../Components/CustomTab'
@@ -55,6 +56,7 @@ function UserScreenStack() {
         >
             <UserStack.Screen name="User" component={UserScreen} />
             <UserStack.Screen name="History" component={HistoryScreen} />
+            <UserStack.Screen name="UserInformation" component={UserInformationScreen} />
         </UserStack.Navigator>
     )
 }

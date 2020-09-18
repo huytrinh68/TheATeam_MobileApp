@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     textTitle: {
         textAlign: 'center',
         fontSize: 20,
-        color: Color.PRIMARY
+        color: Color.PRIMARY,
+        fontFamily:'Comfortaa'
     },
     card: {
         marginTop: 20,
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
     },
     textReason: {
         color: Color.INACTIVE,
+        fontFamily:'Comfortaa'
     },
     fontIcon: {
         color: Color.PRIMARY,

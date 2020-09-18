@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10
     },
     view_contentAlert: {
+        fontFamily:'Comfortaa',
         alignItems: 'center',
         paddingTop: 10,
         paddingBottom: 15
@@ -166,7 +167,8 @@ const styles = StyleSheet.create({
     text_contentAlert: {
         fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily:'Comfortaa',
     },
     text_descriptionAlert: {
         fontSize: 12,

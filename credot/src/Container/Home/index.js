@@ -74,7 +74,6 @@ const HomeScreen = ({ navigation }) => {
         } else {
             return ['#00fff8', '#00487b']
         }
-
     }
     const renderPoint = () => {
         const colorGradient = ['#ff0909', '#ff8200', '#fee001', '#a6f20f']
@@ -82,11 +81,11 @@ const HomeScreen = ({ navigation }) => {
             <LinearGradient
                 colors={handleColorGradient(point)}
                 start={{ x: 0.0, y: 1.0 }} end={{ x: 1.0, y: 1.0 }}
-                style={{ height: width - 80, width: width - 80, alignItems: 'center', justifyContent: 'center', borderRadius: (width - 80) / 2, marginTop: 50 }}
+                style={{ height: width - 80, width: width - 80, alignItems: 'center', justifyContent: 'center', borderRadius: (width - 80) / 2, marginTop: 100 }}
             >
                 <View style={{ height: width - 90, width: width - 90, backgroundColor: '#FFFFFF', borderRadius: (width - 90) / 2, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ zIndex: 9999999, color: handleColorGradient(point)[0], fontSize: 70 }}>{point}</Text>
-                    <Text style={{ zIndex: 9999999, color: handleColorGradient(point)[0], fontSize: 30, paddingTop: 5 }}>{userInformation?.data?.user?.title}</Text>
+                    <Text style={{ zIndex: 9999999, color: handleColorGradient(point)[0], fontSize: 70, fontFamily: 'Comfortaa' }}>{point}</Text>
+                    <Text style={{ zIndex: 9999999, color: handleColorGradient(point)[0], fontSize: 30, fontFamily: 'Comfortaa', paddingTop: 5 }}>{userInformation?.data?.user?.title}</Text>
                 </View>
             </LinearGradient>
         )
@@ -131,11 +130,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '500',
         color: Color.PRIMARY,
+        fontFamily: 'Comfortaa'
+
     },
     text_user_point: {
         fontSize: 22,
         paddingTop: 20,
-        color: Color.PRIMARY
+        color: Color.PRIMARY,
+        fontFamily: 'Comfortaa'
     },
 
 })

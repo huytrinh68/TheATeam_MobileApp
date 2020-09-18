@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     slide: {
         flex: 1,
         alignItems: 'center',
-        paddingTop: 100,
+        paddingTop: 150,
         paddingLeft: 20,
         paddingRight: 20,
         backgroundColor: Color.WHITE
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         paddingTop: 10,
         color: 'red'
+        , fontFamily: 'Comfortaa'
 
     },
     image: {
@@ -63,7 +64,8 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 13,
         paddingTop: 80,
-        color: Color.PRIMARY
+        color: Color.PRIMARY,
+        fontFamily: 'Comfortaa'
     },
     view_nextButton: {
         alignItems: 'center',
@@ -98,7 +100,8 @@ const styles = StyleSheet.create({
     },
     text_buttonCircle: {
         color: Color.WHITE,
-        fontSize: 12
+        fontSize: 12,
+        fontFamily: 'Comfortaa'
     }
 })
 export default ImprovePointScreen

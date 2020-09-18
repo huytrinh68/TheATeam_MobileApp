@@ -242,7 +242,8 @@ const styles = StyleSheet.create({
     },
     text_submitLogin: {
         color: Color.WHITE,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily:'Raleway'
     },
     view_otherway: {
         alignItems: 'center',

@@ -27,7 +27,7 @@ const RequestSuccess = ({ navigation }) => {
                 <Card
                     style={{ backgroundColor: type === 'back' ? Color.WHITE : Color.PRIMARY, padding: 20, alignItems: 'center', borderRadius: 30 }}
                 >
-                    <Text style={{ color: type === 'back' ? Color.PRIMARY : Color.WHITE }}>{label}</Text>
+                    <Text style={{ color: type === 'back' ? Color.PRIMARY : Color.WHITE, fontFamily: 'Raleway', fontSize: 16 }}>{label}</Text>
                 </Card>
             </TouchableScale >
         )
@@ -56,7 +56,7 @@ const RequestSuccess = ({ navigation }) => {
                 resizeMode={'contain'}
 
             />
-            <Text style={{ color: Color.PRIMARY, fontSize: 16 }}>{`Yêu cầu của bạn đã được hệ thống lưu lại!`}</Text>
+            <Text style={{ color: Color.PRIMARY, fontSize: 16, fontFamily: 'Comfortaa' }}>{`Yêu cầu của bạn đã được hệ thống lưu lại!`}</Text>
             {actionButton()}
         </SafeAreaView>
     )
@@ -65,7 +65,8 @@ const RequestSuccess = ({ navigation }) => {
 const styles = StyleSheet.create({
     image: {
         width: '100%',
-        height: 300
+        height: 300,
+        marginTop: 100
     }
 })
 

@@ -10,7 +10,6 @@ const RequestLoan = ({ navigation }) => {
     const dispatch = useDispatch()
     const listLoan = useSelector(state => state.requestLoan.listLoan?.data || [])
     useEffect(() => {
-        if (listLoan) return
         global.props.showLoading()
         dispatch(getLoan()).then(res => {
             global.props.hideLoading()
@@ -20,7 +19,7 @@ const RequestLoan = ({ navigation }) => {
     const renderTitle = () => {
         return (
             <View style={{ width: '100%', alignItems: 'center', paddingTop: 30, paddingBottom: 10 }}>
-                <Text style={{ fontSize: 15, color: '#88afc7', textAlign: 'center' }}>{`Chọn ngân hàng mà bạn muốn sử dụng dịch vụ:`}</Text>
+                <Text style={{ fontSize: 15, color: '#88afc7', textAlign: 'center',fontFamily:'Comfortaa' }}>{`Chọn ngân hàng mà bạn muốn sử dụng dịch vụ:`}</Text>
             </View>
         )
     }
@@ -37,7 +36,7 @@ const RequestLoan = ({ navigation }) => {
                         style={{ width: '100%', height: 150 }}
                         resizeMode={'contain'}
                     />
-                    <Text style={{ color: Color.PRIMARY, paddingLeft: 20, paddingRight: 20 }}>{item.name}</Text>
+                    <Text style={{ color: Color.PRIMARY, paddingLeft: 20, paddingRight: 20,fontFamily:'Comfortaa' }}>{item.name}</Text>
                 </Card>
             </TouchableScale>
         )

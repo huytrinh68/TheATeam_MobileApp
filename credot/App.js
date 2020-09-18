@@ -5,11 +5,11 @@ import store from '@Redux/store'
 import { enableScreens } from 'react-native-screens'
 import { AppConsumer, AppProvider } from '@Components/AppProvider'
 import Orientation from 'react-native-orientation'
-
+// import 'react-native-gesture-handler'
 enableScreens()
 
 export default class App extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     Orientation.lockToPortrait()
   }

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { Constants, Storage, Color } from '@Helper'
 import { Icon } from 'native-base'
+import { TouchableScale } from '@Components'
 
 const IntroductionScreen = ({ navigation }) => {
     const _renderItem = ({ item }) => {
@@ -23,7 +24,9 @@ const IntroductionScreen = ({ navigation }) => {
 
     const _renderDoneButton = () => {
         return (
-            <View style={styles.view_nextButton}>
+            <View
+                style={styles.view_nextButton}
+            >
                 <Icon type={'EvilIcons'} name={'check'} style={styles.icon_next} />
             </View>
         )
@@ -43,13 +46,14 @@ const IntroductionScreen = ({ navigation }) => {
         onDone={() => _onDone()}
         renderDoneButton={() => _renderDoneButton()}
         renderNextButton={() => _renderNextButton()}
+        activeDotStyle={{ backgroundColor: Color.PRIMARY }}
     />
 }
 const styles = StyleSheet.create({
     slide: {
         flex: 1,
         alignItems: 'center',
-        paddingTop: 100,
+        paddingTop: 150,
         paddingLeft: 20,
         paddingRight: 20,
         backgroundColor: Color.WHITE
@@ -57,16 +61,18 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 22,
         paddingTop: 10,
-        color:Color.PRIMARY
+        color: Color.PRIMARY,
+        fontFamily: 'Comfortaa'
     },
     image: {
         width: 200,
         height: 200
     },
     text: {
-        fontSize: 12,
+        fontSize: 16,
         paddingTop: 20,
-        color:Color.PRIMARY
+        color: Color.PRIMARY,
+        fontFamily: 'Comfortaa'
     },
     view_nextButton: {
         alignItems: 'center',

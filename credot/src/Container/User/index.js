@@ -3,6 +3,7 @@ import { View, Text, FlatList, SafeAreaView, Linking, BackHandler } from 'react-
 import { Color, Storage, NavigationActions } from '@Helper'
 import { Header, TouchableScale } from '@Components'
 import { Icon, Card } from 'native-base'
+import { ShareDialog } from 'react-native-fbsdk';
 
 const listAction = [
     {
@@ -31,8 +32,35 @@ const listAction = [
         icon: 'sign-out'
     },
 ]
+
+const shareLinkContent = {
+    contentType: 'link',
+    contentUrl: "http://theateam.tech/",
+    contentDescription: 'The platform for Credit Scoring!',
+};
+
 const UserScreen = ({ navigation }) => {
 
+    const shareLinkWithShareDialog = () => {
+
+        ShareDialog.canShow(shareLinkContent).then(
+            function (canShow) {
+                if (canShow) {
+                    return ShareDialog.show(shareLinkContent);
+                }
+            }
+        ).then(
+            function (result) {
+                if (result.isCancelled) {
+                } else {
+                    global.props.alert('Chia sẻ nội dung thành công!', false, true)
+                }
+            },
+            function (error) {
+                // alert('Share failed with error: ' + error.message);
+            }
+        );
+    }
     const backAction = () => {
         global.props.alert("Bạn có chắc muốn thoát ứng dụng?", true, true, false, () => BackHandler.exitApp())
     };
@@ -45,8 +73,14 @@ const UserScreen = ({ navigation }) => {
     }, []);
 
     const handlePress = type => {
-        if (type === '2') {
+        if (type === '1') {
+            NavigationActions.openPage(navigation, 'UserInformation')
+        }
+        else if (type === '2') {
             NavigationActions.openPage(navigation, 'History')
+        }
+        else if (type === '3') {
+            shareLinkWithShareDialog()
         }
         else if (type === '4') {
             Linking.openSettings();
@@ -67,7 +101,7 @@ const UserScreen = ({ navigation }) => {
 
                 }}>
                 <Card style={{
-                    width: 300,
+                    width: 350,
                     height: 60,
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -86,7 +120,7 @@ const UserScreen = ({ navigation }) => {
                         />
                     </View>
                     <View style={{ width: '80%', alignItems: 'flex-start' }}>
-                        <Text style={{ color: Color.PRIMARY }}>{item.label}</Text>
+                        <Text style={{ color: Color.PRIMARY, fontFamily: 'Comfortaa' }}>{item.label}</Text>
                     </View>
                 </Card>
             </TouchableScale>

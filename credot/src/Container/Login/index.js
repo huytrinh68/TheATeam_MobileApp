@@ -114,7 +114,7 @@ const LoginScreen = ({ navigation }) => {
                 {itemButon('ĐĂNG NHẬP', 'login', Color.PRIMARY)}
                 <View style={styles.view_otherway}>
                     <View style={styles.view_otherline} />
-                    <Text>{`HOẶC`}</Text>
+                    <Text style={{ fontFamily: 'Raleway' }}>{`HOẶC`}</Text>
                     <View style={styles.view_otherline} />
                 </View>
                 {itemButon('ĐĂNG KÝ TÀI KHOẢN MỚI', 'signup', Color.WHITE, Color.PRIMARY)}
@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
     input_field: {
         height: 45,
         width: '90%',
-        paddingLeft: 10
+        paddingLeft: 10,
+        color: Color.PRIMARY
 
     },
     view_formLogin: {
@@ -187,7 +188,8 @@ const styles = StyleSheet.create({
     },
     text_submitLogin: {
         color: Color.WHITE,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'Raleway'
     },
     view_otherway: {
         alignItems: 'center',

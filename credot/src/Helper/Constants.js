@@ -114,7 +114,7 @@ const introductionData = [
         title: 'Bước 3'
     },
     {
-        id: '3',
+        id: '4',
         text: `Theo dõi tình trạng gói vay của bạn`,
         image: LocalImage.step4,
         title: 'Bước 4'

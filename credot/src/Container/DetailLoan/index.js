@@ -11,7 +11,8 @@ let dataReason = {}
 const DetailLoanScreen = ({ navigation, route }) => {
     const data = route?.params
     const [show, setShow] = useState(false)
-
+    const [dataReason, setDataReason] = useState({ reason: null, money: null })
+    const [dataShow, setDataShow] = useState({ reason: null, money: null })
     const openModal = () => {
         setShow(true)
 
@@ -34,7 +35,7 @@ const DetailLoanScreen = ({ navigation, route }) => {
                         name={'questioncircleo'}
                         style={styles.fontIcon}
                     />
-                    <Text style={[styles.textReason, { color: dataReason.reason ? Color.PRIMARY : Color.INACTIVE }]}>{dataReason.reason ? dataReason.reason : 'Chọn mục đích vay tiền'}</Text>
+                    <Text style={[styles.textReason, { color: dataReason.reason ? Color.PRIMARY : Color.INACTIVE, fontFamily: 'Comfortaa', textAlign: 'left' }]}>{dataReason.reason ? dataReason.reason : 'Chọn mục đích vay tiền'}</Text>
                     <Icon
                         type={'AntDesign'}
                         name={'down'}
@@ -46,7 +47,9 @@ const DetailLoanScreen = ({ navigation, route }) => {
     }
 
     const handlePress = (label) => {
-        dataReason.reason = label
+        let newData = { ...dataReason }
+        newData['reason'] = label
+        setDataReason(newData)
         setShow(false)
     }
 
@@ -56,7 +59,7 @@ const DetailLoanScreen = ({ navigation, route }) => {
                 onPress={() => handlePress(item.label)}
                 style={{ paddingTop: 15, paddingBottom: 15, width: '100%' }}
             >
-                <Text style={{ color: Color.PRIMARY, textAlign: 'center' }}>{item.label}</Text>
+                <Text style={{ color: Color.PRIMARY, textAlign: 'center', fontFamily: 'Comfortaa' }}>{item.label}</Text>
             </TouchableScale>
         )
     }
@@ -80,6 +83,12 @@ const DetailLoanScreen = ({ navigation, route }) => {
         )
     }
 
+    const formatInput = () => {
+        let newData = { ...dataReason }
+        newData['money'] = Identify.handlePrice(parseInt(dataReason.money))
+        setDataShow(newData)
+    }
+
     const rangeValue = () => {
         return (
             <Card
@@ -88,8 +97,15 @@ const DetailLoanScreen = ({ navigation, route }) => {
                 <Icon type={'MaterialIcons'} name={'attach-money'} style={{ color: Color.PRIMARY }} />
                 <TextInput
                     placeholder={`Trong khoảng ${Identify.handlePrice(data.amountFrom)} - ${Identify.handlePrice(data.amountTo)}`}
-                    style={{ paddingLeft: 10, color: Color.PRIMARY, alignItems:'center' }}
-                    onChangeText={text => dataReason.money = text}
+                    style={{ color: Color.PRIMARY, paddingLeft: dataReason.money ? 80 : 40 }}
+                    value={dataShow.money ? dataShow.money : ''}
+                    onChangeText={text => {
+                        let newData = { ...dataReason }
+                        newData['money'] = text
+                        setDataReason(newData)
+                        setDataShow(newData)
+                    }}
+                    onEndEditing={() => formatInput()}
                 />
             </Card>
         )
@@ -107,21 +123,23 @@ const DetailLoanScreen = ({ navigation, route }) => {
             global.props.showToast(`Giá trị bạn nhập chưa chính xác giá trị trong khoảng ${Identify.handlePrice(currentFrom)} - ${Identify.handlePrice(currentTo)}`)
             return null
         }
-        global.props.showLoading()
         let dataRequest = {
             bankId: data?.bankData?._id,
             loanPackageId: data?._id,
             reason: dataReason.reason,
             money: dataReason.money
         }
-        requestLoan(dataRequest).then(res => {
-            global.props.hideLoading()
-            if (res.status) {
-                NavigationActions.openPage(navigation, 'RequestSuccess')
-            }
-            else {
-                global.props.alert(res.message, true, false, false, () => NavigationActions.openPage(navigation, 'Home'), 'Vui lòng thử lại sau')
-            }
+        global.props.alert('Bạn có chắc chắn muốn vay gói vay này?', true, true, false, () => {
+            global.props.showLoading()
+            requestLoan(dataRequest).then(res => {
+                global.props.hideLoading()
+                if (res.status) {
+                    NavigationActions.openPage(navigation, 'RequestSuccess')
+                }
+                else {
+                    global.props.alert(res.message, true, false, false, () => NavigationActions.openPage(navigation, 'Home'), 'Vui lòng thử lại sau')
+                }
+            })
         })
     }
 
@@ -138,7 +156,7 @@ const DetailLoanScreen = ({ navigation, route }) => {
                     borderRadius: 30,
                     marginTop: 100
                 }}>
-                <Text style={{ color: Color.WHITE, fontWeight: 'bold' }}>{'YÊU CẦU VAY'}</Text>
+                <Text style={{ color: Color.WHITE, fontWeight: 'bold', fontFamily: 'Raleway' }}>{'YÊU CẦU VAY'}</Text>
             </TouchableScale>
         )
     }
@@ -146,9 +164,9 @@ const DetailLoanScreen = ({ navigation, route }) => {
         <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
             <Header navigation={navigation} useLeft={true} />
             <View style={{ paddingLeft: 20, paddingRight: 20, paddingTop: 70 }}>
-                <Text style={{ color: Color.PRIMARY, textAlign: 'center', fontSize: 20, paddingBottom: 10 }}>{`Mục đích vay tiền:`}</Text>
+                <Text style={{ color: Color.PRIMARY, textAlign: 'center', fontSize: 20, paddingBottom: 20, fontFamily: 'Comfortaa' }}>{`Mục đích vay tiền:`}</Text>
                 {reasonRequest()}
-                <Text style={{ color: Color.PRIMARY, textAlign: 'center', fontSize: 20, paddingBottom: 10, paddingTop: 40 }}>{`Số tiền cần vay:`}</Text>
+                <Text style={{ color: Color.PRIMARY, textAlign: 'center', fontSize: 20, paddingBottom: 20, paddingTop: 40, fontFamily: 'Comfortaa' }}>{`Số tiền cần vay:`}</Text>
                 {rangeValue()}
                 {submitAction()}
                 {contentModal()}
